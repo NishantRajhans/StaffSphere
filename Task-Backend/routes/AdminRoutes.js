@@ -1,0 +1,10 @@
+import express from 'express';
+import { CreateEmployee, EditEmployee, DeleteEmployee, GetAllEmployees } from "../controllers/AdminController.js";
+import upload from "../middileware/MulterMiddleware.js";
+import AuthMiddleware from "../middileware/AuthMiddleware.js";
+const router = express.Router();
+router.post("/CreateEmployee", upload.single("EmployeeImage"), AuthMiddleware, CreateEmployee);
+router.delete("/DeleteEmployee/:id", AuthMiddleware, DeleteEmployee);
+router.get("/GetAllEmployees", AuthMiddleware, GetAllEmployees);
+router.put("/EditEmployee/:id", upload.single("EmployeeImage"), AuthMiddleware, EditEmployee);
+export default router;
