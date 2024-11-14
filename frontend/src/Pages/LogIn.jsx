@@ -11,6 +11,7 @@ import {
 import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import axios from "axios";
 const LogIn = () => {
   const {
@@ -31,8 +32,13 @@ const LogIn = () => {
       }
     }
     )
-    localStorage.setItem("Token",response.data.Token)
-    navigate("/Employees")
+    if(response.data.success==true){
+      toast.success("Admin LogIn Successfully")
+      localStorage.setItem("Token",response.data.Token)
+      navigate("/Employees")
+    }else{
+      toast.error(response.data.message)
+    }
   };
   return (
     <div className="flex justify-center items-center my-auto h-screen bg-black">

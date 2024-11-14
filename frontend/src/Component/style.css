@@ -1,0 +1,14 @@
+.ag-theme-quartz,
+.ag-theme-quartz-dark {
+    --ag-foreground-color: rgb(243, 141, 7);
+    --ag-accent-color: #ec380b;
+    --ag-background-color: rgb(0, 0, 0);
+    --ag-header-foreground-color: rgb(248, 250, 247);
+    --ag-header-background-color: rgb(0, 0, 0);
+    --ag-odd-row-background-color: rgb(0, 0, 0, 0.03);
+    --ag-header-column-resize-handle-color: rgb(248, 245, 248);
+    --ag-row-border-color: solid rgb(248, 245, 248);
+    --ag-cell-horizontal-border: solid rgb(248, 245, 248);
+    --ag-font-size: 19px;
+    --ag-font-family: monospace;
+}

@@ -19,7 +19,7 @@ const Employee = () => {
   };
   useEffect(() => {
     if(!localStorage.getItem("Token"))navigate("/LogIn")
-    fetchEmployeeList();
+    else fetchEmployeeList();
   }, []);
   return (
     <div>

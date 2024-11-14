@@ -7,6 +7,7 @@ import {
   AvatarFallback,
   AvatarImage,
 } from "../components/ui/avatar"
+import { toast } from "react-toastify";
 const NavLinks = [
   {
     id: 1,
@@ -32,7 +33,7 @@ const NavBar = () => {
       <div className="flex gap-4">
         {NavLinks.map((link) => {
           return (
-            <Link to={link.Link} key={link.id} className={`cursor-pointer ${locationName==link.Name?("text-slate-400"):("text-white")}`}>
+            <Link to={link.Link} key={link.id} className={`cursor-pointer text-lg ${locationName==link.Name?("text-orange-400"):("text-white")}`}>
               {link.Name}
             </Link>
           );
@@ -41,7 +42,7 @@ const NavBar = () => {
       <div>
         {localStorage.getItem("Token") ? (
           <div>
-            <Avatar className="cursor-pointer" onClick={()=>{localStorage.removeItem("Token")}}>
+            <Avatar className="cursor-pointer" onClick={()=>{localStorage.removeItem("Token");navigate("/LogIn");toast.success("Admin LogOut Successfully")}}>
               <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
               <AvatarFallback>CN</AvatarFallback>
             </Avatar>

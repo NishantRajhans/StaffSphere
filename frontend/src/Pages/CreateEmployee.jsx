@@ -23,9 +23,29 @@ import { RadioGroup, RadioGroupItem } from "../components/ui/radio-group";
 import { Input } from "../components/ui/input";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-
+import { toast } from "react-toastify";
+const items = [
+  {
+    id: "mca",
+    label: "MCA",
+  },
+  {
+    id: "bca",
+    label: "BCA",
+  },
+  {
+    id: "bsc",
+    label: "BSC",
+  },
+];
 const CreateEmployee = () => {
-  const { register, handleSubmit, control, formState: { errors } ,reset } = useForm();
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors },
+    reset,
+  } = useForm();
   const navigate = useNavigate();
 
   const handleForm = async (data) => {
@@ -36,20 +56,25 @@ const CreateEmployee = () => {
         EmployeePhoneNumber:data.number, 
         EmployeeDesignation:data.designation ,
         EmployeeGender:data.gender ,
-        EmployeeCourse:data.courses,
+        EmployeeCourse:data.course[0],
         EmployeeImage:data.image[0]
       },{headers:{
         "Content-Type": "multipart/form-data",
         "Authorization": "Bearer "+localStorage.getItem("Token")
       }})
-      reset()
+      if(response.data.success==true){
+        toast.success(response.data.message)
+        reset()
+      }else{
+        toast.error(response.data.message)
+      }
     }catch(err){
       console.log(err)
     }
   };
-  useEffect(()=>{
-    if(!localStorage.getItem("Token"))navigate("/LogIn")
-  },[])
+  useEffect(() => {
+    if (!localStorage.getItem("Token")) navigate("/LogIn");
+  }, []);
   return (
     <div>
       <NavBar />
@@ -68,7 +93,9 @@ const CreateEmployee = () => {
               <div className="grid w-full items-center gap-4">
                 <div className="flex gap-4 justify-center items-center">
                   <div className="flex flex-col space-y-1.5 w-[47%]">
-                    <Label htmlFor="name" className="text-white">Employee Name</Label>
+                    <Label htmlFor="name" className="text-white">
+                      Employee Name
+                    </Label>
                     <Input
                       id="name"
                       placeholder="Enter Employee Name"
@@ -77,7 +104,9 @@ const CreateEmployee = () => {
                     />
                   </div>
                   <div className="flex flex-col space-y-1.5 w-[47%]">
-                    <Label htmlFor="email" className="text-white">Employee Email</Label>
+                    <Label htmlFor="email" className="text-white">
+                      Employee Email
+                    </Label>
                     <Input
                       id="email"
                       placeholder="Enter Employee Email"
@@ -88,7 +117,9 @@ const CreateEmployee = () => {
                 </div>
                 <div className="flex gap-3 justify-center items-center">
                   <div className="flex flex-col space-y-1.5 w-[47%]">
-                    <Label htmlFor="number" className="text-white">Employee Phone Number</Label>
+                    <Label htmlFor="number" className="text-white">
+                      Employee Phone Number
+                    </Label>
                     <Input
                       id="number"
                       placeholder="Enter Phone Number"
@@ -98,7 +129,9 @@ const CreateEmployee = () => {
                     />
                   </div>
                   <div className="flex flex-col space-y-1.5 w-[47%]">
-                    <Label htmlFor="designation" className="text-white">Designation</Label>
+                    <Label htmlFor="designation" className="text-white">
+                      Designation
+                    </Label>
                     <Controller
                       name="designation"
                       control={control}
@@ -106,13 +139,25 @@ const CreateEmployee = () => {
                       render={({ field: { onChange, value } }) => (
                         <Select onValueChange={onChange} value={value}>
                           <SelectTrigger className="w-full bg-black text-white border-slate-800">
-                            <SelectValue placeholder="Select A Designation" className="font-bold" />
+                            <SelectValue
+                              placeholder="Select A Designation"
+                              className="font-bold"
+                            />
                           </SelectTrigger>
                           <SelectContent className="w-full bg-black border-slate-800">
                             <SelectGroup>
-                              <SelectItem value="Hr" className="text-white">Hr</SelectItem>
-                              <SelectItem value="Manager" className="text-white">Manager</SelectItem>
-                              <SelectItem value="Sales" className="text-white">Sales</SelectItem>
+                              <SelectItem value="Hr" className="text-white">
+                                Hr
+                              </SelectItem>
+                              <SelectItem
+                                value="Manager"
+                                className="text-white"
+                              >
+                                Manager
+                              </SelectItem>
+                              <SelectItem value="Sales" className="text-white">
+                                Sales
+                              </SelectItem>
                             </SelectGroup>
                           </SelectContent>
                         </Select>
@@ -122,44 +167,78 @@ const CreateEmployee = () => {
                 </div>
                 <div className="flex gap-3 justify-center items-center">
                   <div className="flex flex-col space-y-1.5 w-[47%]">
-                    <Label htmlFor="gender" className="text-white">Gender</Label>
+                    <Label htmlFor="gender" className="text-white">
+                      Gender
+                    </Label>
                     <Controller
                       name="gender"
                       control={control}
                       rules={{ required: true }}
                       render={({ field: { onChange, value } }) => (
-                        <RadioGroup onValueChange={onChange} value={value} className="w-full">
+                        <RadioGroup
+                          onValueChange={onChange}
+                          value={value}
+                          className="w-full"
+                        >
                           <div className="flex items-center space-x-2">
-                            <RadioGroupItem value="male" id="male" />
-                            <Label htmlFor="male" className="text-white">Male</Label>
+                            <RadioGroupItem value="Male" id="male" />
+                            <Label htmlFor="male" className="text-white">
+                              Male
+                            </Label>
                           </div>
                           <div className="flex items-center space-x-2">
-                            <RadioGroupItem value="female" id="female" />
-                            <Label htmlFor="female" className="text-white">Female</Label>
+                            <RadioGroupItem value="Female" id="female" />
+                            <Label htmlFor="female" className="text-white">
+                              Female
+                            </Label>
                           </div>
                         </RadioGroup>
                       )}
                     />
                   </div>
                   <div className="flex flex-col space-y-1.5 w-[47%]">
-                    <Label htmlFor="course" className="text-white mt-4">Course</Label>
-                    {["MCA", "BCA", "BSC"].map((course, index) => (
-                      <div key={course} className="flex items-center space-x-2 text-white">
-                        <Checkbox
-                          id={`${course}`}
-                          {...register("courses[]")}
-                          value={course}
-                        />
-                        <Label htmlFor={`${course}`} className="text-sm font-medium">
-                          {course}
-                        </Label>
-                      </div>
+                    <Label htmlFor="gender" className="text-white">
+                      Course
+                    </Label>
+                    {items.map((item) => (
+                      <Controller
+                        name="course"
+                        control={control}
+                        defaultValue={[]}
+                        render={({ field }) => {
+                          return (
+                            <div>
+                            <Checkbox
+                              checked={
+                                Array.isArray(field.value) &&
+                                field.value?.includes(item.label)
+                              }
+                              className="text-white !important" // Use !important to force styling if needed
+                              style={{ color: "white" }} // Apply inline style for text color
+                              onCheckedChange={(checked) => {
+                                return checked
+                                  ? field.onChange([...field.value, item.label])
+                                  : field.onChange(
+                                      field.value?.filter(
+                                        (value) => value !== item.label
+                                      ) || []
+                                    );
+                              }}
+                            />
+                            <span className="text-white ml-1 font-bold text-xs">{item.label}</span>
+                            </div>
+                          );
+                        }}
+
+                      />
                     ))}
                   </div>
                 </div>
                 <div className="flex gap-3 justify-center items-center">
                   <div className="flex flex-col space-y-1.5 w-[47%]">
-                    <Label htmlFor="image" className="text-white">Employee Image</Label>
+                    <Label htmlFor="image" className="text-white">
+                      Employee Image
+                    </Label>
                     <Input
                       id="file"
                       placeholder="Enter Employee Image"
